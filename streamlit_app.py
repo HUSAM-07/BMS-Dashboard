@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 
+#wide layout
+st. set_page_config(layout="wide")
+
 # Load the tasks data
 tasks = pd.read_csv("tasks.csv")
 
