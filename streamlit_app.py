@@ -76,7 +76,7 @@ def delete_task():
   df.to_csv("tasks.csv", index=False)
 
 # Display the tasks
-st.title("Task Tracker")
+st.title("BMS Task Tracker & Project Timeline")
 st.table(tasks)
 
 # Add a new task
