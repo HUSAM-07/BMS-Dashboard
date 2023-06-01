@@ -90,3 +90,5 @@ if st.button("Update task"):
 # Delete a task
 if st.button("Delete task"):
   delete_task()
+
+  st.caption("This App is Designed & Developed by HUSAM")
