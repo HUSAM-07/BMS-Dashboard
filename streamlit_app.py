@@ -56,8 +56,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-     <iframe
-     src="https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd/?embed=true"
-     height="450"
-     style="width:100%;border:none;"
-     ></iframe>
