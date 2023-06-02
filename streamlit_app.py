@@ -1,51 +1,55 @@
 import streamlit as st
 import pandas as pd
 
-# Create a list to store tasks
-tasks = []
+# Create a dataframe to store tasks
+tasks_df = pd.DataFrame(columns=['Task Name', 'Department', 'Assigned To', 'Deadline', 'Details', 'Status'])
 
-# Departments
-departments = ['Department A', 'Department B', 'Department C']
+# Function to add a new task
+def add_task(task_name, department, assigned_to, deadline, details):
+    global tasks_df
+    new_task = pd.Series([task_name, department, assigned_to, deadline, details, 'Pending'], index=tasks_df.columns)
+    tasks_df = tasks_df.append(new_task, ignore_index=True)
 
-# Assignees
-assignees = ['John', 'Jane', 'Mike', 'Emily']
+# Function to update task status
+def update_task_status(index, status):
+    global tasks_df
+    tasks_df.at[index, 'Status'] = status
 
-# Function to add a task
-def add_task(task):
-    tasks.append(task)
+# Function to delete a task
+def delete_task(index):
+    global tasks_df
+    tasks_df = tasks_df.drop(index)
 
-# Streamlit app layout
+# Function to display tasks
+def display_tasks():
+    st.subheader('Tasks List')
+    st.dataframe(tasks_df)
+
+# Main function
 def main():
-    st.title("Organization Task Dashboard")
+    st.title('Tasks Tracker')
 
-    # Sidebar to add new tasks
-    st.sidebar.header("Add New Task")
-    new_task = st.sidebar.text_input("Enter task")
-    department = st.sidebar.selectbox("Department Assigned To", departments)
-    assigned_to = st.sidebar.multiselect("Assigned To", assignees)
-    date_to_be_completed = st.sidebar.date_input("Date to be Completed")
-    task_description = st.sidebar.text_area("Task Description")
-    add_button = st.sidebar.button("Add Task")
+    task_name = st.text_input('Task Name')
+    department = st.selectbox('Assigned to Department', ['Department A', 'Department B', 'Department C'])
+    assigned_to = st.text_input('Assigned to')
+    deadline = st.date_input('Deadline Date')
+    details = st.text_area('Details')
 
-    if add_button and new_task != "":
-        task = {
-            'Task': new_task,
-            'Department': department,
-            'Assigned To': ', '.join(assigned_to),
-            'Date to be Completed': date_to_be_completed,
-            'Task Description': task_description,
-            'Status': 'In Progress'
-        }
-        add_task(task)
-        st.sidebar.success("Task added successfully!")
+    if st.button('Add Task'):
+        add_task(task_name, department, assigned_to, deadline, details)
+        st.success('Task added successfully!')
 
-    # Display the list of tasks in a table
-    st.header("Tasks")
-    if len(tasks) == 0:
-        st.info("No tasks added yet.")
-    else:
-        df = pd.DataFrame(tasks)
-        st.table(df)
+    display_tasks()
 
-if __name__ == "__main__":
+    if st.checkbox('Mark Task as Completed'):
+        completed_task_index = st.number_input('Enter the index of the task to mark as completed', min_value=0, max_value=len(tasks_df)-1, value=0, step=1)
+        update_task_status(completed_task_index, 'Completed')
+        st.success('Task status updated!')
+
+    if st.checkbox('Delete Task'):
+        delete_task_index = st.number_input('Enter the index of the task to delete', min_value=0, max_value=len(tasks_df)-1, value=0, step=1)
+        delete_task(delete_task_index)
+        st.success('Task deleted successfully!')
+
+if __name__ == '__main__':
     main()
