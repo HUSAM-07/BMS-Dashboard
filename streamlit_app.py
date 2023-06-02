@@ -1,12 +1,9 @@
+```python
 import streamlit as st
 import pandas as pd
 
 # Create a list of tasks
-tasks = [
-  {"title": "Task 1", "description": "This is the first task.", "status": "Incomplete"},
-  {"title": "Task 2", "description": "This is the second task.", "status": "Incomplete"},
-  {"title": "Task 3", "description": "This is the third task.", "status": "Incomplete"}
-]
+tasks = []
 
 # Create a table of tasks
 df = pd.DataFrame(tasks)
@@ -18,11 +15,13 @@ st.table(df)
 # Add a new task
 def add_task():
   title = st.text_input("Title")
-  description = st.text_input("Description")
+  description = st.markdown("Description")
   status = st.selectbox("Status", ["Incomplete", "Complete"])
+  assigned_to_department = st.text_input("Assigned to Department")
+  assigned_to = st.text_input("Assigned to")
 
-  if title and description and status:
-    tasks.append({"title": title, "description": description, "status": status})
+  if title and description and status and assigned_to_department and assigned_to:
+    tasks.append({"title": title, "description": description, "status": status, "assigned_to_department": assigned_to_department, "assigned_to": assigned_to})
 
 # Delete a task
 def delete_task():
@@ -36,11 +35,15 @@ def update_task():
   title = st.selectbox("Select a task to update", tasks)
 
   if title:
-    description = st.text_input("New description")
+    description = st.markdown("New Description")
     status = st.selectbox("New status", ["Incomplete", "Complete"])
+    assigned_to_department = st.text_input("New Assigned to Department")
+    assigned_to = st.text_input("New Assigned to")
 
     tasks[title]["description"] = description
     tasks[title]["status"] = status
+    tasks[title]["assigned_to_department"] = assigned_to_department
+    tasks[title]["assigned_to"] = assigned_to
 
 # Add a button to add a new task
 if st.button("Add Task"):
@@ -53,3 +56,10 @@ if st.button("Delete Task"):
 # Add a button to update a task
 if st.button("Update Task"):
   update_task()
+
+# Add a timeline view based off a monthly overlook
+if st.checkbox("Show timeline view"):
+  st.line_chart(df.set_index("status"))
+
+
+
