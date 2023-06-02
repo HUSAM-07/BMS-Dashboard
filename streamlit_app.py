@@ -1,63 +1,92 @@
 import streamlit as st
 import pandas as pd
 
-# Create a database of tasks
-tasks = pd.DataFrame({
-    'Task Name': ['Task 1', 'Task 2', 'Task 3'],
-    'Task Assigned to Department': ['Department 1', 'Department 2', 'Department 3'],
-    'Task Assigned to': ['Employee 1', 'Employee 2', 'Employee 3'],
-    'Deadline Date': ['2023-06-03', '2023-06-04', '2023-06-05'],
-    'Details': ['This is the details for Task 1.', 'This is the details for Task 2.', 'This is the details for Task 3.'],
-    'Task Status': ['Not Started', 'In Progress', 'Completed']
-})
+#wide layout
+st. set_page_config(layout="wide")
 
-# Display the tasks in a table
+# Load the tasks data
+tasks = pd.read_csv("tasks.csv")
+
+# Create a function to add a new task
+def add_task():
+  task_name = st.text_input("Task name")
+  status = st.selectbox("Status", ["Not Started", "In Progress", "Done"])
+  assignee = st.text_input("Assignee")
+  due_date = st.date_input("Due date")
+  priority = st.selectbox("Priority", ["Low", "Medium", "High"])
+  summary = st.text_area("Summary")
+  tags = st.text_input("Tags")
+  project = st.text_input("Project")
+  parent_task = st.text_input("Parent task")
+  sub_tasks = st.text_input("Sub tasks")
+
+  if st.button("Add task"):
+    new_task = {
+      "task_name": task_name,
+      "status": status,
+      "assignee": assignee,
+      "due_date": due_date,
+      "priority": priority,
+      "summary": summary,
+      "tags": tags,
+      "project": project,
+      "parent_task": parent_task,
+      "sub_tasks": sub_tasks
+    }
+    tasks = tasks.append(new_task, ignore_index=True)
+    df = pd.DataFrame(tasks)
+    df.to_csv("tasks.csv", index=False)
+
+# Create a function to update a task
+def update_task():
+  task_id = st.selectbox("Select task to update", tasks["task_name"])
+  task = tasks[tasks["task_name"] == task_id]
+
+  task_name = st.text_input("Task name", task["task_name"])
+  status = st.selectbox("Status", task["status"], task.columns)
+  assignee = st.text_input("Assignee", task["assignee"])
+  due_date = st.date_input("Due date", task["due_date"])
+  priority = st.selectbox("Priority", task["priority"], task.columns)
+  summary = st.text_area("Summary", task["summary"])
+  tags = st.text_input("Tags", task["tags"])
+  project = st.text_input("Project", task["project"])
+  parent_task = st.text_input("Parent task", task["parent_task"])
+  sub_tasks = st.text_input("Sub tasks", task["sub_tasks"])
+
+  if st.button("Update task"):
+    task["task_name"] = task_name
+    task["status"] = status
+    task["assignee"] = assignee
+    task["due_date"] = due_date
+    task["priority"] = priority
+    task["summary"] = summary
+    task["tags"] = tags
+    task["project"] = project
+    task["parent_task"] = parent_task
+    task["sub_tasks"] = sub_tasks
+    tasks.loc[tasks["task_name"] == task_id] = task
+    df = pd.DataFrame(tasks)
+    df.to_csv("tasks.csv", index=False)
+
+# Create a function to delete a task
+def delete_task():
+  task_id = st.selectbox("Select task to delete", tasks["task_name"])
+  tasks = tasks[tasks["task_name"] != task_id]
+  df = pd.DataFrame(tasks)
+  df.to_csv("tasks.csv", index=False)
+
+# Display the tasks
+st.title("BMS Task Tracker & Project Timeline")
 st.table(tasks)
 
 # Add a new task
-def add_task():
-    task_name = st.text_input('Task Name')
-    task_assigned_to_department = st.selectbox('Task Assigned to Department', tasks['Task Assigned to Department'].unique())
-    task_assigned_to = st.selectbox('Task Assigned to', tasks['Task Assigned to'].unique())
-    deadline_date = st.date_input('Deadline Date')
-    details = st.text_area('Details')
-    task_status = st.selectbox('Task Status', tasks['Task Status'].unique())
-
-    new_task = {
-        'Task Name': task_name,
-        'Task Assigned to Department': task_assigned_to_department,
-        'Task Assigned to': task_assigned_to,
-        'Deadline Date': deadline_date,
-        'Details': details,
-        'Task Status': task_status
-    }
-
-    tasks = tasks.append(new_task, ignore_index=True)
+if st.button("Add task"):
+  add_task()
 
 # Update a task
-def update_task():
-    task_id = st.selectbox('Select a task to update', tasks['Task Name'].unique())
-    task = tasks[tasks['Task Name'] == task_id]
-
-    task_name = st.text_input('Task Name', value=task['Task Name'])
-    task_assigned_to_department = st.selectbox('Task Assigned to Department', tasks['Task Assigned to Department'].unique(), value=task['Task Assigned to Department'])
-    task_assigned_to = st.selectbox('Task Assigned to', tasks['Task Assigned to'].unique(), value=task['Task Assigned to'])
-    deadline_date = st.date_input('Deadline Date', value=task['Deadline Date'])
-    details = st.text_area('Details', value=task['Details'])
-    task_status = st.selectbox('Task Status', tasks['Task Status'].unique(), value=task['Task Status'])
-
-    tasks.loc[tasks['Task Name'] == task_id, 'Task Name'] = task_name
-    tasks.loc[tasks['Task Name'] == task_id, 'Task Assigned to Department'] = task_assigned_to_department
-    tasks.loc[tasks['Task Name'] == task_id, 'Task Assigned to'] = task_assigned_to
-    tasks.loc[tasks['Task Name'] == task_id, 'Deadline Date'] = deadline_date
-    tasks.loc[tasks['Task Name'] == task_id, 'Details'] = details
-    tasks.loc[tasks['Task Name'] == task_id, 'Task Status'] = task_status
+if st.button("Update task"):
+  update_task()
 
 # Delete a task
-def delete_task():
-    task_id = st.selectbox('Select a task to delete', tasks['Task Name'].unique())
-    tasks = tasks[tasks['Task Name'] != task_id]
-
-# Mark a task as completed
-def mark_task_as_completed():
-    task_id = st.selectbox('Select a task to mark as completed', tasks['Task Name'].
+if st.button("Delete task"):
+  delete_task()
