@@ -25,7 +25,7 @@ def main():
     #Sponsorship Database
     st.header("Sponsorship Database")
     # Get the Notion page URL
-    st.text(https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd)
+    st.text("https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd")
 
     # Sidebar to add new tasks
     st.sidebar.header("Add New Task")
