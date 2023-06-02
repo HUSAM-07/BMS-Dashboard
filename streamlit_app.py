@@ -25,7 +25,8 @@ def main():
     #Sponsorship Database
     st.header("Sponsorship Database")
     # Get the Notion page URL
-    st.text("https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd")
+    # Create a markdown element
+    st.markdown(f"`<iframe src='https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd' width='500' height='500'></iframe>`")
 
     # Sidebar to add new tasks
     st.sidebar.header("Add New Task")
