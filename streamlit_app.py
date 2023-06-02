@@ -45,7 +45,7 @@ def main():
         st.info("No tasks added yet.")
     else:
         df = pd.DataFrame(tasks)
-        st.dataframe(df, index=False)
+        st.table(df)
 
 if __name__ == "__main__":
     main()
