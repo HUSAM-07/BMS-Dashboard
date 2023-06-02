@@ -1,8 +1,5 @@
 import streamlit as st
-
-#Warning Box
-st.warning('This is app is under development, please feel free to experiment around with the app, If you encounter any errors/bugs please get back to husam', icon="⚠️")
-
+import pandas as pd
 
 # Create a list to store tasks
 tasks = []
@@ -36,23 +33,26 @@ def main():
     add_button = st.sidebar.button("Add Task")
 
     if add_button and new_task != "":
-        task = f"**Task:** {new_task}\n" \
-               f"**Department:** {department}\n" \
-               f"**Assigned To:** {', '.join(assigned_to)}\n" \
-               f"**Date to be Completed:** {date_to_be_completed}\n" \
-               f"**Task Description:** {task_description}"
+        task = {
+            'Task': new_task,
+            'Department': department,
+            'Assigned To': ', '.join(assigned_to),
+            'Date to be Completed': date_to_be_completed,
+            'Task Description': task_description
+        }
         add_task(task)
         st.sidebar.success("Task added successfully!")
 
-    # Display the list of tasks
+    # Display the list of tasks in a table
     st.header("Tasks")
     if len(tasks) == 0:
         st.info("No tasks added yet.")
     else:
-        for i, task in enumerate(tasks):
-            st.write(f"{i+1}. {task}")
+        df = pd.DataFrame(tasks)
+        st.table(df)
 
-            # Checkbox to mark a task as completed
+        # Checkbox to mark a task as completed
+        for i in range(len(df)):
             complete_checkbox = st.checkbox("Complete", key=f"complete_checkbox_{i}")
             if complete_checkbox:
                 complete_task(i)
