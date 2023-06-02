@@ -21,6 +21,13 @@ def complete_task(task_index):
 # Streamlit app layout
 def main():
     st.title("Organization Task Dashboard")
+
+    #Sponsorship Database
+    st.header("Sponsorship Database")
+    st.markdown('<div style="border: 1px solid #ddd; border-radius: 5px; padding: 10px;">'
+                '<iframe src="https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd" width="800" height="400"></iframe>'
+                '</div>', unsafe_allow_html=True)
+
     # Sidebar to add new tasks
     st.sidebar.header("Add New Task")
     new_task = st.sidebar.text_input("Enter task")
