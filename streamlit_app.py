@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 
@@ -7,7 +6,6 @@ tasks = []
 
 # Create a table of tasks
 df = pd.DataFrame(tasks)
-df = df.set_index("title")
 
 # Display the table of tasks
 st.table(df)
@@ -15,7 +13,7 @@ st.table(df)
 # Add a new task
 def add_task():
   title = st.text_input("Title")
-  description = st.markdown("Description")
+  description = st.text_area("Description")
   status = st.selectbox("Status", ["Incomplete", "Complete"])
   assigned_to_department = st.text_input("Assigned to Department")
   assigned_to = st.text_input("Assigned to")
@@ -35,7 +33,7 @@ def update_task():
   title = st.selectbox("Select a task to update", tasks)
 
   if title:
-    description = st.markdown("New Description")
+    description = st.text_area("New Description")
     status = st.selectbox("New status", ["Incomplete", "Complete"])
     assigned_to_department = st.text_input("New Assigned to Department")
     assigned_to = st.text_input("New Assigned to")
@@ -60,6 +58,3 @@ if st.button("Update Task"):
 # Add a timeline view based off a monthly overlook
 if st.checkbox("Show timeline view"):
   st.line_chart(df.set_index("status"))
-
-
-
