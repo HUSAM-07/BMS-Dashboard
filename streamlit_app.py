@@ -1,59 +1,75 @@
 import streamlit as st
 import pandas as pd
 
-# Function to add a new task
-def add_task(task_name, department, assigned_to, deadline, details, tasks_df):
-    new_task = pd.DataFrame(
-        [[task_name, department, assigned_to, deadline, details, 'Pending']],
-        columns=tasks_df.columns
-    )
-    tasks_df = pd.concat([tasks_df, new_task], ignore_index=True)
-    return tasks_df
+# Create a database to store the tasks
+db = pd.DataFrame({
+    "Task Name": [],
+    "Task Assigned to Department": [],
+    "Task Assigned to": [],
+    "Deadline Date": [],
+    "Details": [],
+    "Task Status": []
+})
 
-# Function to update task status
-def update_task_status(index, status, tasks_df):
-    tasks_df.at[index, 'Status'] = status
-    return tasks_df
+# Create a function to add a new task
+def add_task():
+    task_name = st.text_input("Task Name")
+    task_assigned_to_department = st.text_input("Task Assigned to Department")
+    task_assigned_to = st.text_input("Task Assigned to")
+    deadline_date = st.date_input("Deadline Date")
+    details = st.text_area("Details")
+    task_status = st.radio("Task Status", ("Pending", "Completed"))
 
-# Function to delete a task
-def delete_task(index, tasks_df):
-    tasks_df = tasks_df.drop(index)
-    tasks_df.reset_index(drop=True, inplace=True)
-    return tasks_df
+    # Add the task to the database
+    db = db.append({
+        "Task Name": task_name,
+        "Task Assigned to Department": task_assigned_to_department,
+        "Task Assigned to": task_assigned_to,
+        "Deadline Date": deadline_date,
+        "Details": details,
+        "Task Status": task_status
+    }, ignore_index=True)
 
-# Function to display tasks
-def display_tasks(tasks_df):
-    st.subheader('Tasks List')
-    st.dataframe(tasks_df)
+# Create a function to update a task
+def update_task(task_id):
+    task = db[db["Task ID"] == task_id]
 
-# Main function
-def main():
-    st.title('Tasks Tracker')
+    task_name = st.text_input("Task Name", task["Task Name"])
+    task_assigned_to_department = st.text_input("Task Assigned to Department", task["Task Assigned to Department"])
+    task_assigned_to = st.text_input("Task Assigned to", task["Task Assigned to"])
+    deadline_date = st.date_input("Deadline Date", task["Deadline Date"])
+    details = st.text_area("Details", task["Details"])
+    task_status = st.radio("Task Status", ("Pending", "Completed"), value=task["Task Status"])
 
-    # Load existing tasks from a file or database
-    tasks_df = pd.DataFrame(columns=['Task Name', 'Department', 'Assigned To', 'Deadline', 'Details', 'Status'])
+    # Update the task in the database
+    db.loc[db["Task ID"] == task_id, ["Task Name", "Task Assigned to Department", "Task Assigned to", "Deadline Date", "Details", "Task Status"]] = [task_name, task_assigned_to_department, task_assigned_to, deadline_date, details, task_status]
 
-    task_name = st.text_input('Task Name')
-    department = st.selectbox('Assigned to Department', ['Department A', 'Department B', 'Department C'])
-    assigned_to = st.text_input('Assigned to')
-    deadline = st.date_input('Deadline Date')
-    details = st.text_area('Details')
+# Create a function to delete a task
+def delete_task(task_id):
+    db = db[db["Task ID"] != task_id]
 
-    if st.button('Add Task'):
-        tasks_df = add_task(task_name, department, assigned_to, deadline, details, tasks_df)
-        st.success('Task added successfully!')
+# Create a function to mark a task as completed
+def mark_task_as_completed(task_id):
+    db.loc[db["Task ID"] == task_id, "Task Status"] = "Completed"
 
-    display_tasks(tasks_df)
+# Display the tasks in a table
+st.table(db)
 
-    if st.checkbox('Mark Task as Completed'):
-        completed_task_index = st.number_input('Enter the index of the task to mark as completed', min_value=0, max_value=len(tasks_df)-1, value=0, step=1)
-        tasks_df = update_task_status(completed_task_index, 'Completed', tasks_df)
-        st.success('Task status updated!')
+# Add a new task button
+if st.button("Add New Task"):
+    add_task()
 
-    if st.checkbox('Delete Task'):
-        delete_task_index = st.number_input('Enter the index of the task to delete', min_value=0, max_value=len(tasks_df)-1, value=0, step=1)
-        tasks_df = delete_task(delete_task_index, tasks_df)
-        st.success('Task deleted successfully!')
+# Update a task button
+if st.button("Update Task"):
+    task_id = st.number_input("Task ID")
+    update_task(task_id)
 
-if __name__ == '__main__':
-    main()
+# Delete a task button
+if st.button("Delete Task"):
+    task_id = st.number_input("Task ID")
+    delete_task(task_id)
+
+# Mark a task as completed button
+if st.button("Mark Task as Completed"):
+    task_id = st.number_input("Task ID")
+    mark_task_as_completed(task_id)
