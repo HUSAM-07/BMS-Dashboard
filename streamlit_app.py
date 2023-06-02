@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title=None, page_icon=None, layout="wide", initial_sidebar_state="auto", menu_items=None)
 # Create a list to store tasks
 tasks = []
 
@@ -14,11 +13,6 @@ assignees = ['John', 'Jane', 'Mike', 'Emily']
 # Function to add a task
 def add_task(task):
     tasks.append(task)
-
-# Function to mark a task as completed
-def complete_task(task_index):
-    if task_index < len(tasks):
-        tasks[task_index]['Status'] = "✅ Completed"
 
 # Streamlit app layout
 def main():
@@ -51,14 +45,7 @@ def main():
         st.info("No tasks added yet.")
     else:
         df = pd.DataFrame(tasks)
-        st.dataframe(df)
-
-        # Checkbox to mark a task as completed
-        for i in range(len(df)):
-            complete_checkbox = st.checkbox("Complete", key=f"complete_checkbox_{i}")
-            if complete_checkbox:
-                complete_task(i)
-                st.sidebar.success("Task marked as completed!")
+        st.dataframe(df, index=False)
 
 if __name__ == "__main__":
     main()
