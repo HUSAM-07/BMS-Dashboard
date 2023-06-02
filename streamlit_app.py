@@ -4,10 +4,10 @@ import streamlit as st
 tasks = []
 
 # Departments
-departments = ['Department A', 'Department B', 'Department C']
+departments = ['Technical', 'Marketing', 'Office Bearers','Sponsorships']
 
 # Assignees
-assignees = ['John', 'Jane', 'Mike', 'Emily']
+assignees = ['HUSAM', 'Sanjay', 'Marshal', 'Sai']
 
 # Function to add a task
 def add_task(task):
@@ -21,6 +21,11 @@ def complete_task(task_index):
 # Streamlit app layout
 def main():
     st.title("Organization Task Dashboard")
+    <iframe
+  src="https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd"
+  height="450"
+  style="width:100%;border:none;"
+></iframe>
 
     # Sidebar to add new tasks
     st.sidebar.header("Add New Task")
