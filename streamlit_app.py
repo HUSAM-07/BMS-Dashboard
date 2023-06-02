@@ -1,60 +1,43 @@
 import streamlit as st
-import pandas as pd
 
-# Create a list of tasks
+# Create a list to store tasks
 tasks = []
 
-# Create a table of tasks
-df = pd.DataFrame(tasks)
+# Function to add a task
+def add_task(task):
+    tasks.append(task)
 
-# Display the table of tasks
-st.table(df)
+# Function to mark a task as completed
+def complete_task(task_index):
+    if task_index < len(tasks):
+        tasks[task_index] = f"✅ {tasks[task_index]}"
 
-# Add a new task
-def add_task():
-  title = st.text_input("Title")
-  description = st.text_area("Description")
-  status = st.selectbox("Status", ["Incomplete", "Complete"])
-  assigned_to_department = st.text_input("Assigned to Department")
-  assigned_to = st.text_input("Assigned to")
+# Streamlit app layout
+def main():
+    st.title("Organization Task Dashboard")
 
-  if title and description and status and assigned_to_department and assigned_to:
-    tasks.append({"title": title, "description": description, "status": status, "assigned_to_department": assigned_to_department, "assigned_to": assigned_to})
+    # Sidebar to add new tasks
+    st.sidebar.header("Add New Task")
+    new_task = st.sidebar.text_input("Enter task")
+    add_button = st.sidebar.button("Add Task")
 
-# Delete a task
-def delete_task():
-  title = st.selectbox("Select a task to delete", tasks)
+    if add_button and new_task != "":
+        add_task(new_task)
+        st.sidebar.success("Task added successfully!")
 
-  if title:
-    tasks.remove(title)
+    # Display the list of tasks
+    st.header("Tasks")
+    if len(tasks) == 0:
+        st.info("No tasks added yet.")
+    else:
+        for i, task in enumerate(tasks):
+            st.write(f"{i+1}. {task}")
 
-# Update a task
-def update_task():
-  title = st.selectbox("Select a task to update", tasks)
+            # Checkbox to mark a task as completed
+            complete_checkbox = st.checkbox("Complete", key=f"complete_checkbox_{i}")
+            if complete_checkbox:
+                complete_task(i)
+                st.sidebar.success("Task marked as completed!")
 
-  if title:
-    description = st.text_area("New Description")
-    status = st.selectbox("New status", ["Incomplete", "Complete"])
-    assigned_to_department = st.text_input("New Assigned to Department")
-    assigned_to = st.text_input("New Assigned to")
-
-    tasks[title]["description"] = description
-    tasks[title]["status"] = status
-    tasks[title]["assigned_to_department"] = assigned_to_department
-    tasks[title]["assigned_to"] = assigned_to
-
-# Add a button to add a new task
-if st.button("Add Task"):
-  add_task()
-
-# Add a button to delete a task
-if st.button("Delete Task"):
-  delete_task()
-
-# Add a button to update a task
-if st.button("Update Task"):
-  update_task()
-
-# Add a timeline view based off a monthly overlook
-if st.checkbox("Show timeline view"):
-  st.line_chart(df.set_index("status"))
+if __name__ == "__main__":
+    main()
