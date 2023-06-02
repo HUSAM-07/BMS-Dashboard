@@ -3,11 +3,11 @@ import pandas as pd
 
 # Function to add a new task
 def add_task(task_name, department, assigned_to, deadline, details, tasks_df):
-    new_task = pd.Series(
-        [task_name, department, assigned_to, deadline, details, 'Pending'],
-        index=tasks_df.columns
+    new_task = pd.DataFrame(
+        [[task_name, department, assigned_to, deadline, details, 'Pending']],
+        columns=tasks_df.columns
     )
-    tasks_df = tasks_df.append(new_task, ignore_index=True)
+    tasks_df = pd.concat([tasks_df, new_task], ignore_index=True)
     return tasks_df
 
 # Function to update task status
