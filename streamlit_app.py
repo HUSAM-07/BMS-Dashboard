@@ -17,7 +17,7 @@ def add_task(task):
 # Function to mark a task as completed
 def complete_task(task_index):
     if task_index < len(tasks):
-        tasks[task_index] = f"✅ {tasks[task_index]}"
+        tasks[task_index]['Status'] = "✅ Completed"
 
 # Streamlit app layout
 def main():
@@ -38,7 +38,8 @@ def main():
             'Department': department,
             'Assigned To': ', '.join(assigned_to),
             'Date to be Completed': date_to_be_completed,
-            'Task Description': task_description
+            'Task Description': task_description,
+            'Status': 'In Progress'
         }
         add_task(task)
         st.sidebar.success("Task added successfully!")
@@ -49,7 +50,7 @@ def main():
         st.info("No tasks added yet.")
     else:
         df = pd.DataFrame(tasks)
-        st.table(df)
+        st.dataframe(df)
 
         # Checkbox to mark a task as completed
         for i in range(len(df)):
