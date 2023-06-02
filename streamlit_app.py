@@ -24,9 +24,11 @@ def main():
 
     #Sponsorship Database
     st.header("Sponsorship Database")
-    st.markdown('<div style="border: 1px solid #ddd; border-radius: 5px; padding: 10px;">'
-                '<iframe src="https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd" width="800" height="400"></iframe>'
-                '</div>', unsafe_allow_html=True)
+# Get the Notion page URL
+url = "https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd"
+
+# Create a markdown element
+st.markdown(f"`<iframe src='{url}' width='500' height='500'></iframe>`")
 
     # Sidebar to add new tasks
     st.sidebar.header("Add New Task")
