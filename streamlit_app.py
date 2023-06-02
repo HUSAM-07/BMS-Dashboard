@@ -60,4 +60,4 @@ def delete_task():
 
 # Mark a task as completed
 def mark_task_as_completed():
-    task_id = st.selectbox('Select a task to mark as completed', tasks
+    task_id = st.selectbox('Select a task to mark as completed', tasks['Task Name'].
