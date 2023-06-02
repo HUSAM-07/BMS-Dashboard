@@ -22,7 +22,7 @@ def complete_task(task_index):
 def main():
     st.title("Organization Task Dashboard")
     <iframe
-     src="https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd"
+     src="https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd/?embed=true"
      height="450"
      style="width:100%;border:none;"
      ></iframe>
