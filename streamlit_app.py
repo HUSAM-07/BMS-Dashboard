@@ -1,92 +1,58 @@
 import streamlit as st
-import pandas as pd
 
-#wide layout
-st. set_page_config(layout="wide")
+# Create a list to store tasks
+tasks = []
 
-# Load the tasks data
-tasks = pd.read_csv("tasks.csv")
+# Departments
+departments = ['Department A', 'Department B', 'Department C']
 
-# Create a function to add a new task
-def add_task():
-  task_name = st.text_input("Task name")
-  status = st.selectbox("Status", ["Not Started", "In Progress", "Done"])
-  assignee = st.text_input("Assignee")
-  due_date = st.date_input("Due date")
-  priority = st.selectbox("Priority", ["Low", "Medium", "High"])
-  summary = st.text_area("Summary")
-  tags = st.text_input("Tags")
-  project = st.text_input("Project")
-  parent_task = st.text_input("Parent task")
-  sub_tasks = st.text_input("Sub tasks")
+# Assignees
+assignees = ['John', 'Jane', 'Mike', 'Emily']
 
-  if st.button("Add task"):
-    new_task = {
-      "task_name": task_name,
-      "status": status,
-      "assignee": assignee,
-      "due_date": due_date,
-      "priority": priority,
-      "summary": summary,
-      "tags": tags,
-      "project": project,
-      "parent_task": parent_task,
-      "sub_tasks": sub_tasks
-    }
-    tasks = tasks.append(new_task, ignore_index=True)
-    df = pd.DataFrame(tasks)
-    df.to_csv("tasks.csv", index=False)
+# Function to add a task
+def add_task(task):
+    tasks.append(task)
 
-# Create a function to update a task
-def update_task():
-  task_id = st.selectbox("Select task to update", tasks["task_name"])
-  task = tasks[tasks["task_name"] == task_id]
+# Function to mark a task as completed
+def complete_task(task_index):
+    if task_index < len(tasks):
+        tasks[task_index] = f"✅ {tasks[task_index]}"
 
-  task_name = st.text_input("Task name", task["task_name"])
-  status = st.selectbox("Status", task["status"], task.columns)
-  assignee = st.text_input("Assignee", task["assignee"])
-  due_date = st.date_input("Due date", task["due_date"])
-  priority = st.selectbox("Priority", task["priority"], task.columns)
-  summary = st.text_area("Summary", task["summary"])
-  tags = st.text_input("Tags", task["tags"])
-  project = st.text_input("Project", task["project"])
-  parent_task = st.text_input("Parent task", task["parent_task"])
-  sub_tasks = st.text_input("Sub tasks", task["sub_tasks"])
+# Streamlit app layout
+def main():
+    st.title("Organization Task Dashboard")
 
-  if st.button("Update task"):
-    task["task_name"] = task_name
-    task["status"] = status
-    task["assignee"] = assignee
-    task["due_date"] = due_date
-    task["priority"] = priority
-    task["summary"] = summary
-    task["tags"] = tags
-    task["project"] = project
-    task["parent_task"] = parent_task
-    task["sub_tasks"] = sub_tasks
-    tasks.loc[tasks["task_name"] == task_id] = task
-    df = pd.DataFrame(tasks)
-    df.to_csv("tasks.csv", index=False)
+    # Sidebar to add new tasks
+    st.sidebar.header("Add New Task")
+    new_task = st.sidebar.text_input("Enter task")
+    department = st.sidebar.selectbox("Department Assigned To", departments)
+    assigned_to = st.sidebar.multiselect("Assigned To", assignees)
+    date_to_be_completed = st.sidebar.date_input("Date to be Completed")
+    task_description = st.sidebar.text_area("Task Description")
+    add_button = st.sidebar.button("Add Task")
 
-# Create a function to delete a task
-def delete_task():
-  task_id = st.selectbox("Select task to delete", tasks["task_name"])
-  tasks = tasks[tasks["task_name"] != task_id]
-  df = pd.DataFrame(tasks)
-  df.to_csv("tasks.csv", index=False)
+    if add_button and new_task != "":
+        task = f"**Task:** {new_task}\n" \
+               f"**Department:** {department}\n" \
+               f"**Assigned To:** {', '.join(assigned_to)}\n" \
+               f"**Date to be Completed:** {date_to_be_completed}\n" \
+               f"**Task Description:** {task_description}"
+        add_task(task)
+        st.sidebar.success("Task added successfully!")
 
-# Display the tasks
-st.title("BMS Task Tracker & Project Timeline")
-st.table(tasks)
+    # Display the list of tasks
+    st.header("Tasks")
+    if len(tasks) == 0:
+        st.info("No tasks added yet.")
+    else:
+        for i, task in enumerate(tasks):
+            st.write(f"{i+1}. {task}")
 
-# Add a new task
-if st.button("Add task"):
-  add_task()
+            # Checkbox to mark a task as completed
+            complete_checkbox = st.checkbox("Complete", key=f"complete_checkbox_{i}")
+            if complete_checkbox:
+                complete_task(i)
+                st.sidebar.success("Task marked as completed!")
 
-# Update a task
-if st.button("Update task"):
-  update_task()
-
-# Delete a task
-if st.button("Delete task"):
-  delete_task()
+if __name__ == "__main__":
+    main()
