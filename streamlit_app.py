@@ -5,7 +5,6 @@ from pathlib import Path
 import streamlit_authenticator as stauth
 
 # User Authentication
-names = ["Snehaunshu", "Majid", "Husam", "Aaryan", "Drashti", "Sai", "Keane", "Marshal", "Sanjay"]
 usernames = ["Snehaunshu", "Majid", "Husam", "Aaryan", "Drashti", "Sai", "Keane", "Marshal", "Sanjay"]
 
 # Load the hashed passwords
@@ -13,7 +12,7 @@ file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
-authenticator = stauth.Authenticate(**{'names': names}, cookie_expiry_days=1)
+authenticator = stauth.Authenticate(cookie_expiry_days=1)
 
 name, authentication_status, username = authenticator.login("Login", "sidebar")
 
