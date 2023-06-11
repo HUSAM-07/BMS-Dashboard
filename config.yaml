@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    snehaunshu:
+      email: snehaunshu@example.com
+      name: Snehaunshu Ghosh
+      password: $2b$12$Il5.0ohez7K9byO8NSIup.6ko0eDgZ78c3Cp.NbKg5e8mOcKswzSu # Hashed password for "password123"
+    majid:
+      email: majid@example.com
+      name: Majid Ahmed
+      password: $2b$12$A7in/u3ZZZ4bVFR1ZXb.zOl2WvYmNcBkZJKeaMw5orxsGY6WE/NQ6 # Hashed password for "password456"
+cookie:
+  expiry_days: 30
+  key: random_signature_key # Must be a string
+  name: random_cookie_name
+preauthorized:
+  emails:
+  - admin@example.com
