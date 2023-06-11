@@ -4,9 +4,9 @@ from pathlib import Path
 
 import streamlit_authenticator as stauth
 
-#User Authentication
-names = ["Snehaunshu","Majid","Husam","Aaryan","Drashti","Sai","Keane","Marshal","Sanjay"]
-usernames = ["Snehaunshu","Majid","Husam","Aaryan","Drashti","Sai","Keane","Marshal","Sanjay"]
+# User Authentication
+names = ["Snehaunshu", "Majid", "Husam", "Aaryan", "Drashti", "Sai", "Keane", "Marshal", "Sanjay"]
+usernames = ["Snehaunshu", "Majid", "Husam", "Aaryan", "Drashti", "Sai", "Keane", "Marshal", "Sanjay"]
 
 # Load the hashed passwords
 file_path = Path(__file__).parent / "hashed_pw.pkl"
@@ -15,14 +15,11 @@ with file_path.open("rb") as file:
 
 authenticator = stauth.Authenticate(**{'names': names}, cookie_expiry_days=1)
 
-
-
-
 name, authentication_status, username = authenticator.login("Login", "sidebar")
 
-if authentication_status == False:
+if authentication_status is False:
     st.error("The Username/Password Entered is Incorrect, Please Contact HUSAM for Your LogIn Credentials")
-if authentication_status == None:
+if authentication_status is None:
     st.warning("Please enter your credentials to login")
 if authentication_status:
 
@@ -30,7 +27,7 @@ if authentication_status:
     tasks = []
 
     # Departments
-    departments = ['Technical', 'Marketing', 'Office Bearers','Sponsorships']
+    departments = ['Technical', 'Marketing', 'Office Bearers', 'Sponsorships']
 
     # Assignees
     assignees = ['HUSAM', 'Sanjay', 'Marshal', 'Sai']
@@ -48,14 +45,13 @@ if authentication_status:
     def main():
         st.title("Organization Task Dashboard")
 
-        #Sponsorship Database
+        # Sponsorship Database
         st.header("Sponsorship Database")
         # Get the Notion page URL
         # Create a markdown element
-        st.write("Link to sponsorship databse [link](https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd)")
+        st.write("Link to sponsorship database [link](https://husam007.notion.site/BMS-Dubai-Main-Dashboard-5d9bd82d7ec34cb8bbff0df0e0cfebdd)")
 
         # Sidebar to add new tasks
-        authenticator.logout("Logout","sidebar")
         st.sidebar.header("Add New Task")
         new_task = st.sidebar.text_input("Enter task")
         department = st.sidebar.selectbox("Department Assigned To", departments)
@@ -66,10 +62,10 @@ if authentication_status:
 
         if add_button and new_task != "":
             task = f"**Task:** {new_task}\n" \
-                f"**Department:** {department}\n" \
-                f"**Assigned To:** {', '.join(assigned_to)}\n" \
-                f"**Date to be Completed:** {date_to_be_completed}\n" \
-                f"**Task Description:** {task_description}"
+                   f"**Department:** {department}\n" \
+                   f"**Assigned To:** {', '.join(assigned_to)}\n" \
+                   f"**Date to be Completed:** {date_to_be_completed}\n" \
+                   f"**Task Description:** {task_description}"
             add_task(task)
             st.sidebar.success("Task added successfully!")
 
@@ -79,7 +75,7 @@ if authentication_status:
             st.info("No tasks added yet.")
         else:
             for i, task in enumerate(tasks):
-                st.write(f"{i+1}. {task}")
+                st.write(f"{i + 1}. {task}")
 
                 # Checkbox to mark a task as completed
                 complete_checkbox = st.checkbox("Complete", key=f"complete_checkbox_{i}")
@@ -89,4 +85,3 @@ if authentication_status:
 
     if __name__ == "__main__":
         main()
-
