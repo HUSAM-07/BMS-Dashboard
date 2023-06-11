@@ -15,7 +15,7 @@ with file_path.open("rb") as file:
 
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "BMS Dashboard", "abcd", cookie_expiry_days=0)
 
-name, authentication_status, username = authenticator.login("login","main")
+name, authentication_status, username = authenticator.login("Login", "sidebar")
 
 if authentication_status == False:
     st.error("The Username/Password Entered is Incorrect, Please Contact HUSAM for Your LogIn Credentials")
