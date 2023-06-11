@@ -1,17 +1,44 @@
 credentials:
   usernames:
-    snehaunshu:
+    Snehaunshu:
       email: snehaunshu@example.com
-      name: Snehaunshu Ghosh
-      password: $2b$12$Il5.0ohez7K9byO8NSIup.6ko0eDgZ78c3Cp.NbKg5e8mOcKswzSu # Hashed password for "password123"
-    majid:
+      name: Snehaunshu
+      password: <hashed_password>
+    Majid:
       email: majid@example.com
-      name: Majid Ahmed
-      password: $2b$12$A7in/u3ZZZ4bVFR1ZXb.zOl2WvYmNcBkZJKeaMw5orxsGY6WE/NQ6 # Hashed password for "password456"
+      name: Majid
+      password: <hashed_password>
+    Husam:
+      email: husam@example.com
+      name: Husam
+      password: <hashed_password>
+    Aaryan:
+      email: aaryan@example.com
+      name: Aaryan
+      password: <hashed_password>
+    Drashti:
+      email: drashti@example.com
+      name: Drashti
+      password: <hashed_password>
+    Sai:
+      email: sai@example.com
+      name: Sai
+      password: <hashed_password>
+    Keane:
+      email: keane@example.com
+      name: Keane
+      password: <hashed_password>
+    Marshal:
+      email: marshal@example.com
+      name: Marshal
+      password: <hashed_password>
+    Sanjay:
+      email: sanjay@example.com
+      name: Sanjay
+      password: <hashed_password>
 cookie:
-  expiry_days: 30
-  key: random_signature_key # Must be a string
+  expiry_days: 1
+  key: random_signature_key
   name: random_cookie_name
 preauthorized:
-  emails:
-  - admin@example.com
+  emails: []
