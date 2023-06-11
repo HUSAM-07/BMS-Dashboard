@@ -8,7 +8,10 @@ file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
-authenticator = stauth.Authenticate(hashed_passwords, "random_cookie_name", "random_signature_key", cookie_expiry_days=1)
+# Convert usernames to lowercase
+usernames = ["snehaunshu", "majid", "husam", "aaryan", "drashti", "sai", "keane", "marshal", "sanjay"]
+
+authenticator = stauth.Authenticate(hashed_passwords, "random_cookie_name", "random_signature_key", cookie_expiry_days=1, usernames=usernames)
 
 name, authentication_status, username = authenticator.login("Login", "sidebar")
 
@@ -19,6 +22,7 @@ elif authentication_status is None:
 elif authentication_status:
     # Rest of your code...
     # (Add tasks, departments, assignees, main function, etc.)
+
 
     # Create a list to store tasks
     tasks = []
